@@ -1,0 +1,131 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// generator zod {
+//   provider = "zod-prisma"
+//   output   = "./zod" // (default) the directory where generated zod schemas will be saved
+
+//   relationModel = true // (default) Create and export both plain and related models.
+//   // relationModel         = "default" // Do not export model without relations.
+//   // relationModel         = false // Do not generate related model
+
+//   modelCase = "PascalCase" // (default) Output models using pascal case (ex. UserModel, PostModel)
+//   // modelCase             = "camelCase" // Output models using camel case (ex. userModel, postModel)
+
+//   modelSuffix = "Model" // (default) Suffix to apply to your prisma models when naming Zod schemas
+
+//   // useDecimalJs          = false // (default) represent the prisma Decimal type using as a JS number
+//   useDecimalJs = true // represent the prisma Decimal type using Decimal.js (as Prisma does)
+
+//   imports = null // (default) will import the referenced file in generated schemas to be used via imports.someExportedVariable
+
+//   // https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-by-null-values
+//   prismaJsonNullability = true // (default) uses prisma's scheme for JSON field nullability
+//   // prismaJsonNullability = false // allows null assignment to optional JSON fields
+// }
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id
+  name          String    @db.Text
+  email         String
+  emailVerified Boolean
+  image         String?   @db.Text
+  createdAt     DateTime
+  updatedAt     DateTime
+  sessions      Session[]
+  accounts      Account[]
+  Chat          Chat[]
+  Message       Message[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?  @db.Text
+  userAgent String?  @db.Text
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String    @db.Text
+  providerId            String    @db.Text
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?   @db.Text
+  refreshToken          String?   @db.Text
+  idToken               String?   @db.Text
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?   @db.Text
+  password              String?   @db.Text
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String    @db.Text
+  value      String    @db.Text
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+model Chat {
+  id        String    @id @default(uuid())
+  name      String?   @db.Text
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  messages  Message[]
+  // modelUsed String? @db.Text // e.g., "GPT-3.5", "GPT-4"
+
+  @@map("chat")
+}
+
+model Message {
+  id        String      @id @default(uuid())
+  content   String      @db.Text
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  chat      Chat        @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId    String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  role      MessageRole @default(user) // Use the enum
+  name      String?     @db.Text // Add name property
+
+  @@map("message")
+}
+
+enum MessageRole {
+  system
+  user
+  assistant
+  data
+}
