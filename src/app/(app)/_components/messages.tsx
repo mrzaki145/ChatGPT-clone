@@ -14,9 +14,9 @@ function MessagesList({ messages, chatStatus }: Props) {
   const lastElementRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (lastElementRef.current) {
-      lastElementRef.current.scrollIntoView();
-    }
+    if (!lastElementRef.current) return;
+
+    lastElementRef.current.scrollIntoView();
   }, [messages]);
 
   return (
@@ -54,7 +54,7 @@ function BotMessage({ children }: { children: React.ReactNode }) {
         alt="ChatGPT"
         width={32}
         height={32}
-        className="mt-2"
+        className="mt-1"
       />
 
       <div className="flex-1 prose">
@@ -90,7 +90,7 @@ function BotMessageSkeleton() {
     <div className="flex items-start gap-x-4">
       <Image src="/chatgpt-icon.svg" alt="ChatGPT" width={32} height={32} />
 
-      <div className="flex-1 space-y-2">
+      <div className="flex-1 space-y-2 mt-1.5">
         <p>Thinking...</p>
       </div>
     </div>
