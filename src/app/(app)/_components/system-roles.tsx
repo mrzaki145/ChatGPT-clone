@@ -1,3 +1,5 @@
+"use client";
+
 import { Role } from "@/types";
 import { useRouter } from "next/navigation";
 import { createChat } from "../_functions/actions";
