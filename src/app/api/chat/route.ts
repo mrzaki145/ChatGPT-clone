@@ -6,7 +6,7 @@ import { appendClientMessage, streamText } from "ai";
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { message, id } = await req.json();
+  const { message, id, system } = await req.json();
   const previousMessages = await getMessages(id);
 
   if ("error" in previousMessages) {
@@ -23,8 +23,8 @@ export async function POST(req: Request) {
   });
 
   const result = streamText({
-    model: google("gemini-1.5-flash"),
-    system: "You are a helpful assistant.",
+    model: google("gemini-2.0-flash-001"),
+    system,
     messages,
 
     async onFinish({ text }) {
