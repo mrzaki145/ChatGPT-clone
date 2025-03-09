@@ -1,22 +1,28 @@
 "use client";
 
 import Container from "@/components/layout/container";
-import { Message, useChat } from "@ai-sdk/react";
+import { useChat } from "@ai-sdk/react";
+import { Message, type Chat } from "@prisma/client";
 import { MessagesList } from "./messages";
 import PromptInput from "./search-form";
 
 interface Props {
-  chatId?: string | undefined;
-  initialMessages: Message[];
+  chat: Chat & {
+    messages: Message[];
+  };
 }
 
-function Chat({ chatId, initialMessages }: Props) {
-  const chat = useChat({
-    id: chatId,
-    initialMessages,
+function Chat({ chat }: Props) {
+  const aiChat = useChat({
+    id: chat.id,
+    initialMessages: chat.messages as Message[],
     sendExtraMessageFields: true,
     experimental_prepareRequestBody({ messages, id }) {
-      return { message: messages[messages.length - 1], id };
+      return {
+        id,
+        system: chat.system,
+        message: messages[messages.length - 1],
+      };
     },
   });
 
@@ -25,12 +31,15 @@ function Chat({ chatId, initialMessages }: Props) {
       <div className="relative flex-1 overflow-auto">
         <Container className="absolute z-10 inset-0">
           <div className="pt-4 pb-14">
-            <MessagesList chat={chat} />
+            <MessagesList
+              messages={aiChat.messages}
+              chatStatus={aiChat.status}
+            />
           </div>
         </Container>
       </div>
 
-      <PromptInput chat={chat} />
+      <PromptInput chat={aiChat} />
     </>
   );
 }

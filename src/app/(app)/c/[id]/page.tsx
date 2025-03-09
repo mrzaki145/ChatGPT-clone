@@ -24,11 +24,9 @@ async function Page({ params }: PageProps) {
   const { id } = await params;
   const { chat } = await getChat(id);
 
-  if (!chat) {
-    notFound();
-  }
+  if (!chat) notFound();
 
-  return <Chat chatId={chat.id} initialMessages={chat?.messages} />;
+  return <Chat chat={chat} />;
 }
 
 export default Page;
