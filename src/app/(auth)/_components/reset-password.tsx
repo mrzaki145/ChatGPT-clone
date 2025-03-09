@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/form";
 import { PasswordInput } from "@/components/ui/password-input";
 import { resetPassword } from "@/lib/auth-client";
-import { redirect, useSearchParams } from "next/navigation";
+import { redirect } from "next/navigation";
 import { useTransition } from "react";
 
 // Schema for password validation
@@ -41,7 +41,6 @@ const formSchema = z
   });
 
 export default function ResetPasswordForm() {
-  const searchParams = useSearchParams();
   const [pending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,11 +51,18 @@ export default function ResetPasswordForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    const token = new URL(window.location.href).searchParams.get("token");
+
+    if (!token) {
+      toast.error("Token is missing from the URL.");
+      return;
+    }
+
     startTransition(async () => {
       await resetPassword(
         {
           newPassword: values.password,
-          token: searchParams.get("token")!,
+          token: token!,
         },
         {
           onSuccess: () => {
