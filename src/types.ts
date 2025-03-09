@@ -17,3 +17,8 @@ export interface Chat {
 export interface ChatWithMessages extends Chat {
   messages: Message[];
 }
+
+export interface Role {
+  title: string;
+  description: string;
+}
