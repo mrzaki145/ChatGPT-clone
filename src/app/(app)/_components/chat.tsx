@@ -2,7 +2,7 @@
 
 import Container from "@/components/layout/container";
 import { useChat } from "@ai-sdk/react";
-import { Message, type Chat } from "@prisma/client";
+import { type Chat, type Message } from "@prisma/client";
 import { MessagesList } from "./messages";
 import PromptInput from "./search-form";
 
