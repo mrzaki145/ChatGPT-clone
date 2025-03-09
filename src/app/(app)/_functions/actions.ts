@@ -3,7 +3,7 @@
 import { getUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { MessageRole } from "@prisma/client";
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 export async function createChat(role?: {
   title: string;
@@ -24,7 +24,8 @@ export async function createChat(role?: {
       },
     });
 
-    revalidatePath("/");
+    // revalidatePath("/");
+    revalidateTag("chats");
 
     return { chat };
   } catch (error) {
@@ -40,7 +41,9 @@ export async function changeChatName(id: string, name: string) {
       data: { name },
     });
 
-    revalidatePath("/");
+    // revalidatePath("/");
+    revalidateTag("chats");
+
     return { success: true };
   } catch (error) {
     console.error("Error changing chat name:", error);
@@ -68,7 +71,8 @@ export async function deleteChat(id: string) {
       where: { id },
     });
 
-    revalidatePath("/");
+    // revalidatePath("/");
+    revalidateTag("chats");
 
     return { success: true };
   } catch (error) {
@@ -102,7 +106,7 @@ export async function updateChatMessages({
       },
     });
 
-    revalidatePath(`/chat/${id}`);
+    // revalidatePath(`/chat/${id}`);
 
     return { success: true };
   } catch (error) {
