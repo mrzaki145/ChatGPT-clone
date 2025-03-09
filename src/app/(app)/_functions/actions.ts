@@ -5,7 +5,10 @@ import { prisma } from "@/lib/prisma";
 import { MessageRole } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
-export async function createChat() {
+export async function createChat(role?: {
+  title: string;
+  description: string;
+}) {
   try {
     const user = await getUser();
 
@@ -16,6 +19,8 @@ export async function createChat() {
     const chat = await prisma.chat.create({
       data: {
         userId: user.id,
+        name: role?.title || "Untitled Chat",
+        system: role?.description || "You are a helpful assistant.",
       },
     });
 
