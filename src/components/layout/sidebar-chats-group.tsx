@@ -123,7 +123,7 @@ function SidebarChatListItem({ chat }: ChatsListItemProps) {
           className="w-full block appearance-none"
         />
       ) : (
-        <Link className="block w-full truncate" href={`/c/${chat.id}`}>
+        <Link className="block text-sm w-full truncate" href={`/c/${chat.id}`}>
           {chatName}
         </Link>
       )}
