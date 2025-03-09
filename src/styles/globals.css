@@ -133,5 +133,5 @@
 }
 
 @utility prose {
-  @apply text-foreground prose-headings:text-lg prose-headings:mb-2 prose-p:text-sm prose-ul:text-sm prose-ul:mt-2 prose-ul:mb-2 prose-ul:space-y-1 prose-li:mt-1 prose-li:mb-1 prose-li:leading-relaxed prose-p:leading-loose prose-p:mt-2 prose-p:mb-1 prose-strong:text-foreground prose-code:text-accent-foreground prose-code:bg-zinc-700/50 prose-code:p-1 prose-code:rounded-sm;
+  @apply text-foreground prose-headings:text-lg prose-headings:text-white prose-headings:mb-2 prose-p:text-sm prose-ul:text-sm prose-ul:mt-2 prose-ul:mb-2 prose-ul:space-y-1 prose-li:mt-1 prose-li:mb-1 prose-li:leading-relaxed prose-p:leading-loose prose-p:mt-2 prose-p:mb-1 prose-strong:text-foreground prose-code:text-accent-foreground prose-code:bg-zinc-700/50 prose-code:p-1 prose-code:rounded-sm;
 }
