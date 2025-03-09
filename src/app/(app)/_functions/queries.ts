@@ -1,5 +1,7 @@
 import { getUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { Chat } from "@/types";
+import { unstable_cache } from "next/cache";
 
 export async function getChat(id: string) {
   try {
@@ -35,34 +37,34 @@ export async function getChat(id: string) {
   }
 }
 
-export async function getChats() {
-  try {
-    const user = await getUser();
+export const getChats = unstable_cache(
+  async function getChats(userId: string): Promise<Chat[]> {
+    try {
+      const chats = await prisma.chat.findMany({
+        where: {
+          userId,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        select: {
+          id: true,
+          name: true,
+          createdAt: true,
+        },
+      });
 
-    if (!user) {
-      return { error: "User not found" };
+      return chats;
+    } catch (error) {
+      console.error("Failed to fetch chats:", error);
+      throw new Error("Failed to fetch chats");
     }
-
-    const chats = await prisma.chat.findMany({
-      where: {
-        userId: user.id,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-      select: {
-        id: true,
-        name: true,
-        createdAt: true,
-      },
-    });
-
-    return { chats };
-  } catch (error) {
-    console.error("Failed to fetch chats:", error);
-    return { error: "Failed to fetch chats" };
+  },
+  ["chats"],
+  {
+    tags: ["chats"],
   }
-}
+);
 
 export async function getMessages(chatId: string) {
   new Promise((resolve) => setTimeout(resolve, 2000));
