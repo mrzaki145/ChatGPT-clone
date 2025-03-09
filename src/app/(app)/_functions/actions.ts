@@ -2,13 +2,11 @@
 
 import { getUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { Role } from "@/types";
 import { MessageRole } from "@prisma/client";
 import { revalidateTag } from "next/cache";
 
-export async function createChat(role?: {
-  title: string;
-  description: string;
-}) {
+export async function createChat(role?: Role) {
   try {
     const user = await getUser();
 
