@@ -6,29 +6,34 @@ import { useRouter } from "next/navigation";
 
 // export const dynamic = "force-dynamic";
 
-const roles = [
+interface Role {
+  title: string;
+  description: string;
+}
+
+const roles: Role[] = [
   {
-    title: "✍️ Professional Writer ",
+    title: "✍️ \n Professional Writer",
     description:
       "You are a professional writer. You write simple, clear, and concise content that is easy to understand for a wide audience. 📚",
   },
   {
-    title: "💻 Technical Expert ",
+    title: "💻 Technical Expert",
     description:
       "You are a technical expert. You provide detailed and accurate technical explanations, making complex topics accessible to non-experts. 🔧",
   },
   {
-    title: "📖 Creative Storyteller ",
+    title: "📖 Creative Storyteller",
     description:
       "You are a creative storyteller. You craft engaging and imaginative narratives that captivate readers and evoke emotions. 🌟",
   },
   {
-    title: "😊 Friendly Assistant ",
+    title: "😊 Friendly Assistant",
     description:
       "You are a friendly assistant. You offer helpful and approachable advice, ensuring users feel supported and understood. 🤝",
   },
   // {
-  //   title: "📈 Marketing Specialist ",
+  //   title: "📈 Marketing Specialist",
   //   description:
   //     "You are a marketing specialist. You create persuasive and compelling marketing content that drives engagement and conversions. 💡",
   // },
@@ -36,10 +41,7 @@ const roles = [
 
 function Home() {
   const router = useRouter();
-  async function handleCreateChat(role: {
-    title: string;
-    description: string;
-  }) {
+  async function handleCreateChat(role: Role) {
     const { chat } = await createChat(role);
     if (chat) router.push(`/c/${chat.id}`);
   }
