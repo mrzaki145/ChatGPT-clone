@@ -20,7 +20,7 @@ function AppNavbar() {
   const { isMobile, state } = useSidebar();
 
   return (
-    <div className="w-full py-4 px-6 flex items-center justify-between">
+    <div className="w-full p-4 flex items-center justify-between">
       <div className="flex items-center gap-2">
         {(state == "collapsed" || isMobile) && <SidebarTrigger />}
         <p className="font-medium">ChatGPT</p>
