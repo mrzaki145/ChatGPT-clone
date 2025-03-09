@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Chat } from "@/types";
 import { EllipsisIcon } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -38,13 +39,7 @@ import {
 } from "../ui/sidebar";
 
 interface ChatsListProps {
-  chats:
-    | {
-        id: string;
-        name: string | null;
-        createdAt: string;
-      }[]
-    | null;
+  chats: Chat[];
 }
 
 function SidebarChatsGroup({ chats }: ChatsListProps) {
@@ -71,11 +66,7 @@ function SidebarChatsGroup({ chats }: ChatsListProps) {
 }
 
 interface ChatsListItemProps {
-  chat: {
-    id: string;
-    name: string | null;
-    createdAt: string;
-  };
+  chat: Chat;
 }
 
 function SidebarChatListItem({ chat }: ChatsListItemProps) {

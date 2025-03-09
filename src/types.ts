@@ -10,8 +10,7 @@ export interface StoredMessage extends Message {
 
 export interface Chat {
   id: string;
-  name: string;
-  userId: string;
+  name: string | null;
   createdAt: Date;
 }
 

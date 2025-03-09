@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/sidebar";
 
 import { createChat } from "@/app/(app)/_functions/actions";
+import { type Chat } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -15,17 +16,12 @@ import { Button } from "../ui/button";
 import SidebarChatsGroup from "./sidebar-chats-group";
 
 interface ChatsListProps {
-  chats:
-    | {
-        id: string;
-        name: string | null;
-        createdAt: string;
-      }[]
-    | null;
+  chats: Chat[];
 }
 
 export function AppSidebar({ chats }: ChatsListProps) {
   const router = useRouter();
+
   async function handleCreateChat() {
     const { chat } = await createChat();
     if (chat) router.push(`/c/${chat.id}`);
