@@ -1,23 +1,21 @@
 "use client";
 
-import { useChat } from "@ai-sdk/react";
+import { Message } from "ai";
 import Image from "next/image";
 import { Fragment, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 
 interface Props {
-  chat: Awaited<ReturnType<typeof useChat>>;
+  messages: Message[];
+  chatStatus: string;
 }
 
-function MessagesList({ chat }: Props) {
-  const { messages } = chat;
+function MessagesList({ messages, chatStatus }: Props) {
   const lastElementRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (lastElementRef.current) {
-      lastElementRef.current.scrollIntoView({
-        // behavior: "smooth",
-      });
+      lastElementRef.current.scrollIntoView();
     }
   }, [messages]);
 
@@ -33,7 +31,7 @@ function MessagesList({ chat }: Props) {
         </Fragment>
       ))}
 
-      {chat.status == "submitted" && <BotMessageSkeleton />}
+      {chatStatus === "submitted" && <BotMessageSkeleton />}
 
       <div ref={lastElementRef} />
     </div>
@@ -42,7 +40,7 @@ function MessagesList({ chat }: Props) {
 
 function UserMessage({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-zinc-200/10 ms-auto w-fit lg:max-w-[70%] px-4 p-3 rounded-2xl ">
+    <div className="bg-zinc-200/10 ms-auto w-fit lg:max-w-[70%] px-4 p-3 rounded-2xl">
       <ReactMarkdown>{String(children)}</ReactMarkdown>
     </div>
   );
