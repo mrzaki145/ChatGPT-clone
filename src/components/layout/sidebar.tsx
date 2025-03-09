@@ -3,7 +3,6 @@
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
@@ -59,13 +58,13 @@ export function AppSidebar({ chats }: ChatsListProps) {
       <SidebarContent>
         <SidebarChatsGroup chats={chats} />
       </SidebarContent>
-
-      <SidebarFooter>
-        <div className="flex items-center gap-x-2">
-          <Image src="/users-icon.svg" alt="Logo" width={24} height={24} />
-          <span className="text-sm">Invite members</span>
-        </div>
-      </SidebarFooter>
     </Sidebar>
   );
 }
+
+// <SidebarFooter>
+//   <div className="flex items-center gap-x-2">
+//     <Image src="/users-icon.svg" alt="Logo" width={24} height={24} />
+//     <span className="text-sm">Invite members</span>
+//   </div>
+// </SidebarFooter>
